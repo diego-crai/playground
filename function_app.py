@@ -4,8 +4,8 @@ from util import download_html_and_upload_to_blob
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
-@app.route(route="save_to_cloud")
-def save_to_cloud(req: func.HttpRequest) -> func.HttpResponse:
+@app.route(route="cra_download_to_cloud")
+def cra_download_to_cloud(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python CRA HTTP trigger save_to_cloud function is processing a request.')
 
     url = req.params.get('url')

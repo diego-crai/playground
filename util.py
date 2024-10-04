@@ -3,6 +3,7 @@ from azure.storage.blob import BlobServiceClient
 from scrapingant_client import ScrapingAntClient
 from urllib.parse import urlparse
 from datetime import datetime
+import time
 
 CONTAINER_SCRAPER = "scraping"
 
@@ -21,8 +22,18 @@ def download_html_and_upload_to_blob(url, name, container_name=CONTAINER_SCRAPER
     # Initialize ScrapingAnt client
     client = ScrapingAntClient(token=os.getenv('SCRAPINGANT_API_KEY'))
     
-    # Fetch HTML content from the URL
-    result = client.general_request(url)
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            # Fetch HTML content from the URL
+            result = client.general_request(url)
+            break
+        except Exception as e:
+            if attempt < max_retries - 1:
+                print(f"Attempt {attempt + 1} failed: {e}. Retrying...")
+                time.sleep(0.2)  # Short delay before retrying
+            else:
+                raise Exception(f"Failed to fetch the page after {max_retries} attempts. Error: {e}")
     
     if result.status_code != 200:
         raise Exception(f"Failed to fetch the page. Status code: {result.status_code}")

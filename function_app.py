@@ -23,7 +23,9 @@ def cra_download_to_cloud(req: func.HttpRequest) -> func.HttpResponse:
     if url and name:
         logging.info(f"Received URL: {url}")
         logging.info(f"Received Name: {name}")
-        download_html_and_upload_to_blob(url, name)
+        message = download_html_and_upload_to_blob(url, name)
+        if message:
+            return func.HttpResponse(message)
         return func.HttpResponse(f"Received URL: {url} and Name: {name}. This CRA HTTP triggered function executed successfully. Product is now saved to blob storage")
     else:
         return func.HttpResponse(

@@ -5,3 +5,4 @@
 azure-functions
 scrapingant_client
 azure-storage-blob
+requests

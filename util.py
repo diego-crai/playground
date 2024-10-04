@@ -46,9 +46,14 @@ def download_html_and_upload_to_blob(url, name, container_name=CONTAINER_SCRAPER
     # Get the BlobClient for the target blob
     blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
     
-    # Upload the HTML content directly to Azure Blob Storage
-    blob_client.upload_blob(result.content, overwrite=True)
-    
+    try:
+        # Upload the HTML content directly to Azure Blob Storage
+        blob_client.upload_blob(result.content, overwrite=False)
+    except Exception as e:
+        if "BlobAlreadyExists" in str(e):
+            return f"Blob '{blob_name}' already exists in container '{container_name}'."
+        else:
+            raise e
     print(f"HTML content from {url} has been uploaded to blob '{blob_name}' in container '{container_name}'.")
 
 # Example usage:

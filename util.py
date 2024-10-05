@@ -32,7 +32,7 @@ def download_html_and_upload_to_blob_scrapingant(url, name, container_name=CONTA
         except Exception as e:
             if attempt < max_retries - 1:
                 print(f"Attempt {attempt + 1} failed: {e}. Retrying...")
-                time.sleep(0.2)  # Short delay before retrying
+                time.sleep(0.02)  # Short delay before retrying
             else:
                 raise Exception(f"Failed to fetch the page after {max_retries} attempts. Error: {e}")
     
@@ -91,7 +91,7 @@ def download_html_and_upload_to_blob(url, name, container_name=CONTAINER_SCRAPER
         except requests.exceptions.RequestException as e:
             if attempt < max_retries - 1:
                 print(f"Attempt {attempt + 1} failed: {e}. Retrying...")
-                time.sleep(0.2)  # Short delay before retrying
+                time.sleep(0.02)  # Short delay before retrying
             else:
                 raise Exception(f"Failed to fetch the page after {max_retries} attempts. Error: {e}")
     
